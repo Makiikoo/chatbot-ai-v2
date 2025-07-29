@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using ChatBotAPI.Data;
 using ChatBotAPI.Models;
 using ChatBotAPI.Services;
+using ChatBotAPI.Dtos;
 
 namespace ChatBotAPI.Controllers
 {
@@ -18,18 +19,25 @@ namespace ChatBotAPI.Controllers
             _openAIService = openAIService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> EnviarMensagem([FromBody] Mensagem mensagem)
-        {
-            mensagem.Data = DateTime.Now;
+         [HttpPost]
+public async Task<IActionResult> EnviarMensagem([FromBody] MensagemCriacaoDto dto)
+{
+    var bot = _context.Bots.FirstOrDefault(b => b.Id == dto.BotId);
+    if (bot == null)
+        return NotFound("Bot não encontrado.");
 
-            // 🔁 Chamada para OpenAI
-            mensagem.Resposta = await _openAIService.EnviarParaOpenAIAsync(mensagem.Pergunta);
+    var mensagem = new Mensagem
+    {
+        Pergunta = dto.Pergunta,
+        BotId = dto.BotId,
+        Resposta = await _openAIService.EnviarParaOpenAIAsync(dto.Pergunta, bot.Descricao),
+        Data = DateTime.Now
+    };
 
-            _context.Mensagens.Add(mensagem);
-            await _context.SaveChangesAsync();
+    _context.Mensagens.Add(mensagem);
+    await _context.SaveChangesAsync();
 
-            return Ok(mensagem);
-        }
+    return Ok(mensagem);
+}
     }
 }

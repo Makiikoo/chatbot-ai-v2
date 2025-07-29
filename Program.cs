@@ -1,23 +1,27 @@
 using Microsoft.EntityFrameworkCore;
 using ChatBotAPI.Data;
 using ChatBotAPI.Services;
+using ChatBotAPI.Mapping;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ✅ Configura o DbContext com SQLite
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=chatbot.db"));
 
 builder.Services.AddScoped<OpenAIService>();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
-//  Ativa suporte a controllers e API
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(opt =>
+{
+    opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -26,8 +30,5 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
-
-// ✅ Ativa os controllers que você vai criar (ex: BotController)
 app.MapControllers();
-
 app.Run();

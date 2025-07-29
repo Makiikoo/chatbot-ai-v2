@@ -6,6 +6,8 @@ C:\Users\makiko\OneDrive\Documentos\Estudos\Chatbot+OpenAI\ChatBotAPI\ChatBotAPI
 C:\Users\makiko\OneDrive\Documentos\Estudos\Chatbot+OpenAI\ChatBotAPI\ChatBotAPI\bin\Debug\net9.0\ChatBotAPI.runtimeconfig.json
 C:\Users\makiko\OneDrive\Documentos\Estudos\Chatbot+OpenAI\ChatBotAPI\ChatBotAPI\bin\Debug\net9.0\ChatBotAPI.dll
 C:\Users\makiko\OneDrive\Documentos\Estudos\Chatbot+OpenAI\ChatBotAPI\ChatBotAPI\bin\Debug\net9.0\ChatBotAPI.pdb
+C:\Users\makiko\OneDrive\Documentos\Estudos\Chatbot+OpenAI\ChatBotAPI\ChatBotAPI\bin\Debug\net9.0\AutoMapper.dll
+C:\Users\makiko\OneDrive\Documentos\Estudos\Chatbot+OpenAI\ChatBotAPI\ChatBotAPI\bin\Debug\net9.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\Users\makiko\OneDrive\Documentos\Estudos\Chatbot+OpenAI\ChatBotAPI\ChatBotAPI\bin\Debug\net9.0\Humanizer.dll
 C:\Users\makiko\OneDrive\Documentos\Estudos\Chatbot+OpenAI\ChatBotAPI\ChatBotAPI\bin\Debug\net9.0\Microsoft.AspNetCore.OpenApi.dll
 C:\Users\makiko\OneDrive\Documentos\Estudos\Chatbot+OpenAI\ChatBotAPI\ChatBotAPI\bin\Debug\net9.0\Microsoft.Bcl.AsyncInterfaces.dll
