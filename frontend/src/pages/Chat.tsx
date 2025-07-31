@@ -18,14 +18,19 @@ export function Chat() {
   const [mensagens, setMensagens] = useState<Mensagem[]>([]);
   const [pergunta, setPergunta] = useState("");
   const [digitando, setDigitando] = useState(false);
+  const [erro, setErro] = useState("");
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     async function fetchBot() {
-      const response = await api.get("/Bots");
-      const foundBot = response.data.find((b: Bot) => b.id === Number(id));
-      setBot(foundBot);
-      setMensagens(foundBot?.mensagens || []);
+      try {
+        const response = await api.get("/Bots");
+        const foundBot = response.data.find((b: Bot) => b.id === Number(id));
+        setBot(foundBot);
+        setMensagens(foundBot?.mensagens || []);
+      } catch {
+        setErro("Erro ao carregar dados. Verifique se o servidor está ativo.");
+      }
     }
 
     fetchBot();
@@ -47,6 +52,7 @@ export function Chat() {
     setMensagens((prev) => [...prev, novaPergunta]);
     setPergunta("");
     setDigitando(true);
+    setErro("");
 
     try {
       const response = await api.post("/Mensagens", {
@@ -61,10 +67,21 @@ export function Chat() {
           )
         );
         setDigitando(false);
-      }, 1500); // tempo que simula digitação
-    } catch (error) {
-      console.error("Erro ao enviar mensagem:", error);
+      }, 1500);
+    } catch {
+      setErro("Erro ao enviar a mensagem. Verifique a conexão.");
       setDigitando(false);
+    }
+  };
+
+  const apagarHistorico = async () => {
+    if (!bot) return;
+
+    try {
+      await api.delete(`/Mensagens/${bot.id}`);
+      setMensagens([]);
+    } catch {
+      setErro("Não foi possível apagar o histórico.");
     }
   };
 
@@ -73,10 +90,9 @@ export function Chat() {
   return (
     <div className={styles.chatContainer}>
       <div className={styles.chatHeader}>
-        <button className={styles.backButton} onClick={() => navigate(-1)}>
-          ⬅ Voltar
-        </button>
+        <button className={styles.backButton} onClick={() => navigate(-1)}>⬅ Voltar</button>
         <h2>Chat com {bot.nome}</h2>
+        <button className={styles.clearButton} onClick={apagarHistorico}>🗑 Limpar histórico</button>
       </div>
 
       <div className={styles.chatMessages}>
@@ -93,22 +109,43 @@ export function Chat() {
           <MessageBubble texto={`${bot.nome} está digitando...`} autor="bot" nomeBot={bot.nome} />
         )}
 
+        {erro && <div className={styles.error}>{erro}</div>}
         <div ref={chatEndRef} />
       </div>
 
       <div className={styles.chatInput}>
         <input
-          type="text"
-          value={pergunta}
-          onChange={(e) => setPergunta(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              enviarMensagem();
-            }
-          }}
-          placeholder="Digite sua pergunta..."
-        />
-        <button onClick={enviarMensagem}>Enviar</button>
+  type="text"
+  value={pergunta}
+  onChange={(e) => {
+    setPergunta(e.target.value);
+    if (erro) setErro("");
+  }}
+  onKeyDown={(e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      if (pergunta.trim().length > 0) {
+        enviarMensagem();
+      } else {
+        setErro("A mensagem não pode estar vazia.");
+      }
+    }
+  }}
+  placeholder="Digite sua pergunta..."
+/>
+<button
+  disabled={!pergunta.trim()}
+  onClick={() => {
+    if (pergunta.trim()) {
+      enviarMensagem();
+    } else {
+      setErro("A mensagem não pode estar vazia.");
+    }
+  }}
+>
+  Enviar
+</button>
+
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import styles from "../styles/Chat.module.css";
+import styles from "../styles/MessageBubble.module.css";
 
 interface MessageBubbleProps {
   texto: string;
@@ -8,13 +8,13 @@ interface MessageBubbleProps {
 
 export function MessageBubble({ texto, autor, nomeBot }: MessageBubbleProps) {
   return (
-    <div className={autor === "user" ? styles.userMessage : styles.botMessage}>
+    <div className={`${styles.bubbleWrapper} ${autor === "user" ? styles.userWrapper : styles.botWrapper}`}>
       {autor === "bot" && nomeBot && (
-        <div style={{ fontWeight: "bold", marginBottom: "0.3rem" }}>
-          {nomeBot}
-        </div>
+        <span className={styles.botLabel}>{nomeBot}</span>
       )}
-      {texto}
+      <div className={`${styles.bubble} ${autor === "user" ? styles.userBubble : styles.botBubble}`}>
+        {texto}
+      </div>
     </div>
   );
 }

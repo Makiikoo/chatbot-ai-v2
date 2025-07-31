@@ -18,9 +18,14 @@ export function CreateBot() {
     try {
       await api.post("/Bots", { nome, descricao });
       navigate("/");
-    } catch (err) {
+    } catch (err: any) {
       console.error("Erro ao criar bot:", err);
-      setErro("Erro ao criar bot.");
+
+      if (err.message === "Network Error") {
+        setErro("Não foi possível conectar ao servidor. Verifique se a API está funcionando corretamente..");
+      } else {
+        setErro("Erro ao criar bot. Tente novamente mais tarde.");
+      }
     }
   };
 
