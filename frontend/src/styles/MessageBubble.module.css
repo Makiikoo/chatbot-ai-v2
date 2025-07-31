@@ -1,0 +1,22 @@
+.bubble {
+  max-width: 70%;
+  padding: 0.75rem 1rem;
+  border-radius: 20px;
+  font-size: 1rem;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.userBubble {
+  background-color: #6a0dad; /* Roxo escuro */
+  color: white;
+  align-self: flex-end;
+  margin-left: auto;
+}
+
+.botBubble {
+  background-color: #f4c430; /* Amarelo dourado */
+  color: #222;
+  align-self: flex-start;
+  margin-right: auto;
+}

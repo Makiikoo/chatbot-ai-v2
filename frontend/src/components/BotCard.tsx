@@ -1,13 +1,19 @@
-type BotCardProps = {
+import { Link } from "react-router-dom";
+import styles from "../styles/BotCard.module.css"; // ajuste o caminho se necessário
+
+interface BotCardProps {
+  id: number;
   nome: string;
   descricao: string;
-};
+}
 
-export function BotCard({ nome, descricao }: BotCardProps) {
+export function BotCard({ id, nome, descricao }: BotCardProps) {
   return (
-    <div style={{ border: "1px solid white", padding: "1rem", margin: "1rem 0", color: "white" }}>
-      <h2>{nome}</h2>
-      <p>{descricao}</p>
-    </div>
+    <Link to={`/chat/${id}`} className={styles.link}>
+      <div className={styles.card}>
+        <h2>{nome}</h2>
+        <p>{descricao}</p>
+      </div>
+    </Link>
   );
 }
