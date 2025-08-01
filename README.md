@@ -1,178 +1,123 @@
-# 🤖 Chatbot AI - Projeto Fullstack (.NET 6 + React)
+# 🤖 Chatbot AI - HighCapital Desafio Técnico
 
-Este projeto é uma aplicação fullstack que permite criar e interagir com chatbots personalizados. Desenvolvido como parte de um desafio técnico para a HighCapital, ele simula a integração com a OpenAI (via mock) e apresenta uma interface amigável para conversar com bots com histórico persistente.
-
----
-
-## 🎯 Objetivo do Projeto
-
-Permitir que usuários:
-- Criem seus próprios chatbots definindo nome e contexto.
-- Interajam com os bots em uma interface de chat moderna.
-- Visualizem e armazenem o histórico das conversas.
+Este é um projeto Full Stack de um chatbot com inteligência artificial, desenvolvido com **.NET 6 (C#)** no backend e **ReactJS + Vite** no frontend. O sistema permite que o usuário crie bots com um contexto personalizado e interaja com eles, com respostas geradas pela **API da OpenAI (ChatGPT)**.
 
 ---
 
-## ⚙️ Tecnologias Utilizadas
+## 🚀 Funcionalidades
 
-### 🔙 Backend
-- **Linguagem**: C#
-- **Framework**: .NET 6
-- **ORM**: Entity Framework Core
-- **Banco de Dados**: SQLite
-- **API Simulada**: Mock do OpenAI (serviço interno `OpenAIService`)
-- **AutoMapper**: Mapeamento entre entidades e DTOs
-- **Swagger**: Documentação de endpoints REST
+### 📌 Backend (.NET 6)
+- Criar bots com nome e contexto personalizado
+- Enviar perguntas e receber respostas geradas com base no contexto do bot
+- Salvar e consultar histórico das conversas no banco de dados SQLite
+- Deletar o histórico de mensagens de um bot
+- Integração com **OpenAI GPT-3.5 Turbo**
 
-### 🔜 Frontend
-- **Framework**: ReactJS
-- **Ferramenta de Build**: Vite
-- **Estilização**: CSS modular e custom properties (`:root`)
-- **Gerenciamento de rotas**: React Router v6
-- **HTTP Client**: Axios
+### 💬 Frontend (React + Vite)
+- Interface amigável para criar e visualizar bots
+- Tela de chat com envio e exibição de mensagens em tempo real
+- Scroll automático, mensagens separadas por autor (usuário/bot)
+- Loading de "bot está digitando..." para melhor UX
 
 ---
 
-## 📦 Funcionalidades
+## 🧠 Integração com OpenAI
 
-### ✅ Criação de Chatbot
-- Nome do bot
-- Contexto (descrição personalizada)
-
-### ✅ Interação com o Chatbot
-- Campo de texto para envio de mensagens
-- Exibição da resposta (mockada)
-- Scroll automático até a última mensagem
-- Bot digitando (efeito visual)
-- Validação de input vazio
-- Tecla `Enter` para enviar mensagem
-
-### ✅ Histórico de Conversa
-- Armazenamento no banco de dados (mensagem e resposta)
-- Visualização persistente por bot
-- Botão de limpar histórico
-
-### ✅ Lista de Bots
-- Exibição de todos os bots cadastrados
-- Navegação para conversar com bot
-- Remoção individual de bots
+Este projeto usa a API `https://api.openai.com/v1/chat/completions` com o modelo `gpt-3.5-turbo`.  
+A chave de API é usada no backend com `HttpClient` para se comunicar com o serviço da OpenAI.
 
 ---
 
-## 🖼️ Interface do Usuário
+## 🔐 Configuração da API Key
 
-- **Home (Lista de Bots)**: lista visual de bots com ações rápidas (conversar/deletar).
-- **Criar Bot**: formulário limpo e validado com retorno visual de erros.
-- **Chat com Bot**: layout full screen, bolhas de mensagens estilizadas e experiência fluida.
+### 1. Crie o arquivo `appsettings.json` com o seguinte conteúdo:
 
----
-
-## 🧱 Estrutura do Projeto
-
-### 🔍 Backend
-```
-ChatBotAPI/
-├── Controllers/
-│   ├── BotsController.cs
-│   └── MensagensController.cs
-├── Models/
-│   ├── Bot.cs
-│   └── Mensagem.cs
-├── Dtos/
-│   ├── BotDto.cs
-│   ├── MensagemDto.cs
-│   └── MensagemCriacaoDto.cs
-├── Services/
-│   └── OpenAIService.cs (Mock)
-├── Mapping/
-│   └── MappingProfile.cs
-├── Data/
-│   └── AppDbContext.cs
-└── Program.cs
+```json
+{
+  "OpenAI": {
+    "ApiKey": "sua-chave-da-openai-aqui"
+  }
+}
 ```
 
-### 🌐 Frontend
+### 2. Atualize o seu `Program.cs` para ler a configuração:
+
+> Já está implementado no serviço `OpenAIService.cs`
+
+### 3. Adicione ao `.gitignore`:
+
+Crie um arquivo `.gitignore` na raiz do projeto backend e adicione:
+
 ```
-src/
-├── pages/
-│   ├── Home.tsx
-│   ├── CreateBot.tsx
-│   └── Chat.tsx
-├── components/
-│   └── MessageBubble.tsx
-├── styles/
-│   ├── Home.module.css
-│   ├── Chat.module.css
-│   └── CreateBot.module.css
-├── services/
-│   └── api.ts
-├── types/
-│   └── Bot.ts
-└── main.tsx
+appsettings.json
 ```
+
+Isso impede que a chave da API seja exposta ao subir o código no GitHub.
 
 ---
 
-## 🚀 Como Rodar Localmente
+## 📦 Tecnologias Utilizadas
 
-### 1️⃣ Backend (.NET)
+- **Back-end:**
+  - .NET 6
+  - Entity Framework Core + SQLite
+  - AutoMapper
+  - Swashbuckle (Swagger)
+  - API da OpenAI (via `HttpClient`)
+
+- **Front-end:**
+  - React + Vite
+  - TypeScript
+  - Axios
+
+---
+
+## ▶️ Como Rodar o Projeto
+
+### 🔧 Pré-requisitos
+- [.NET 6 ou superior](https://dotnet.microsoft.com/)
+- [Node.js + NPM](https://nodejs.org/)
+
+### 📁 Clonar o repositório
+
 ```bash
-cd ChatBotAPI
-dotnet ef database update    # Garante que o banco SQLite seja criado
+git clone https://github.com/Makiikoo/Chatbot-AI.git
+cd Chatbot-AI
+```
+
+### 🔙 Backend (API)
+
+```bash
+cd backend
+dotnet restore
+dotnet build
 dotnet run
 ```
-- API: http://localhost:5166
-- Swagger: http://localhost:5166/swagger
 
-### 2️⃣ Frontend (React + Vite)
+A API estará disponível em: `https://localhost:5166/swagger`
+
+### 🔜 Frontend (Vite + React)
+
 ```bash
-cd chatbot-ai-frontend
+cd frontend
 npm install
 npm run dev
 ```
-- Frontend: http://localhost:5173
+
+Frontend disponível em: `http://localhost:5173`
 
 ---
 
-## 📄 Considerações
+## 📧 Contato do Desenvolvedor
 
-- O projeto simula a integração com OpenAI para fins de teste offline.
-- Código modularizado com componentes reutilizáveis e boas práticas de arquitetura.
-- Cores, mensagens e inputs com foco em acessibilidade e UX.
-- Adaptado para expansão futura com suporte real à API GPT (basta substituir o `OpenAIService.cs`).
-
----
-
-## ✅ Checklist do Desafio
-
-| Requisito                                 | Atendido ✅ |
-|------------------------------------------|-------------|
-| Criar bot com nome e contexto            | ✅          |
-| Enviar mensagem e receber resposta       | ✅ (Mock)   |
-| Exibir histórico e limpar mensagens      | ✅          |
-| Estrutura banco com bots e mensagens     | ✅          |
-| Interface web amigável e responsiva      | ✅          |
-| Componentização e separação lógica       | ✅          |
-| README documentado                       | ✅          |
-| Código limpo e comentado                 | ✅          |
+**Ewerton Campos Junior**  
+📧 juniorbio20@gmail.com  
+🔗 [LinkedIn](https://www.linkedin.com/in/juniorcamposdev/)  
+🐙 [GitHub](https://github.com/Makiikoo)
 
 ---
 
-## 🌟 Futuras Melhorias
+## 🛡️ Aviso
 
-- Integração com API real da OpenAI (`gpt-3.5-turbo`)
-- Armazenamento em PostgreSQL ou SQL Server
-- Testes unitários com xUnit e Jest
-- Autenticação de usuários
-- Suporte a múltiplos idiomas
-
----
-
-## 👨‍💻 Desenvolvedor
-
-**Nome:** Ewerton Campos Junior  
-**LinkedIn:** [linkedin.com/in/juniorcamposdev](https://www.linkedin.com/in/juniorcamposdev/)  
-**GitHub:** [github.com/Makiikoo](https://github.com/Makiikoo)  
-**E-mail:** juniorbio20@gmail.com
-
----
+**Nunca inclua sua chave da OpenAI diretamente no código.**  
+Utilize sempre arquivos de configuração ignorados no `.gitignore`.
